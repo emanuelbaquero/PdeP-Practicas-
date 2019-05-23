@@ -63,24 +63,21 @@ fingirAmor nuevoEnamorado ( Auto nombre nafta velocidad enamorado truco) = ( Aut
 
 --Chequear que un auto pueda realizar un truco
 criterioTruco :: Auto -> Bool
-criterioTruco (Auto nombre nafta velocidad enamorado truco) = (>0) nafta && (<100) velocidad
+criterioTruco (Auto _ nafta velocidad _ _) = (>0) nafta && (<100) velocidad
     
 
 --Copiar truco de otro auto
 copiarTruco :: Auto -> Auto -> Auto
-copiarTruco (Auto nombre autoUnoNafta velocidad enamorado autoUnoTruco) (Auto a autoDosNafta b c autoDosTruco) 	 | criterioTruco (Auto nombre autoUnoNafta velocidad enamorado autoUnoTruco) = (Auto nombre autoUnoNafta velocidad enamorado autoDosTruco)
+copiarTruco (Auto nombre autoUnoNafta velocidad enamorado autoUnoTruco) (Auto _ autoDosNafta _ _ autoDosTruco) 	 | criterioTruco (Auto nombre autoUnoNafta velocidad enamorado autoUnoTruco) = (Auto nombre autoUnoNafta velocidad enamorado autoDosTruco)
 																							 	 				 | 		    otherwise = (Auto nombre autoUnoNafta velocidad enamorado autoUnoTruco)
 
 --Varios autos pueden realizar el truco
 realizarTruco :: Auto -> Auto
-realizarTruco (Auto  nombre nafta velocidad enamorado truco) = truco (Auto nombre nafta velocidad enamorado truco)
+realizarTruco (Auto  nombre nafta velocidad enamorado truco) | ( (>50) . nafta . truco ) (Auto nombre nafta velocidad enamorado truco)) = truco (Auto nombre nafta velocidad enamorado truco)
+															 | otherwise = (Auto nombre nafta velocidad enamorado truco)	
 
-trucoActivado :: Auto -> Auto
-trucoActivado (Auto nombre nafta velocidad enamorado truco ) | criterioTruco (Auto nombre nafta velocidad enamorado truco) = realizarTruco (Auto nombre nafta velocidad enamorado truco)
-		   													 | 		  otherwise = (Auto nombre nafta velocidad enamorado truco)
-
-
-
-		     
+listaAutosTruco :: [Auto] -> [Auto]
+listaAutosTruco [] = []
+listaAutosTruco (x:xs) | realizarTruco x : listaAutosTruco(xs)   
 	
 
